@@ -1,30 +1,48 @@
 * {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
 }
 
 body {
-    width: 100vw;
-    height: 100vh;
-    display: flex;
-    justify-content: center;
-    align-items: center;
+  width: 100vw;
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 .chess-board {
-    padding: 1rem;
-    height: calc(100vh - 8rem);
-    aspect-ratio: 1;
-    display: grid;
-    grid-template-columns: repeat(8, calc((100vh - 10.5rem) / 8));
-    grid-template-rows: repeat(8, calc((100vh - 10.5rem) / 8));
-    border: 5px solid red;
-    overflow: hidden;
+  padding: 1rem;
+  height: calc(100vh - 8rem);
+  min-width: fit-content;
+  aspect-ratio: 1;
+  display: grid;
+  grid-template-columns: repeat(8, calc((100vh - 10.5rem) / 8));
+  grid-template-rows: repeat(8, calc((100vh - 10.5rem) / 8));
+  border: 5px solid red;
+  overflow: hidden;
 }
 
 .cell {
-    /* width: calc((100vh - 7rem) / 8); */
-    aspect-ratio: 1;
-    border: 1px solid black;
+  /* width: calc((100vh - 7rem) / 8); */
+  aspect-ratio: 1;
+  border: 1px solid black;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 32px;
+  /* box-shadow: 0 0 0px 10px black; */
 }
+
+img {
+  width: calc((100vh - 16rem) / 8);
+  aspect-ratio: 1;
+}
+
+/* @media screen and (orientation: portrait) {
+  .chess-board {
+    width: calc(100vh - 8rem);
+    height: auto;
+  }
+} */

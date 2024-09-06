@@ -1,14 +1,37 @@
-window.onload = init;
+import { initGeneralBoard } from "./default.js";
 
-function init() {
-  include("default.js");
-  const board = document.querySelector(".chess-board");
+const board = document.querySelector(".chess-board");
 
-  for (let i = 8; i >= 1; i--) {
-    for (let j = 1; j <= 8; j++) {
-      var cell = document.createElement("div");
-      cell.className = "cell r-" + String.fromCharCode(i + 96) + " f-" + j; // now done yes
-      board.appendChild(cell);
-    }
+for (let i = 8; i >= 1; i--) {
+  for (let j = 1; j <= 8; j++) {
+    var cell = document.createElement("div");
+    //cell.style.gridArea = i + "/" + j;
+    cell.className = "cell r-" + String.fromCharCode(i + 96) + " f-" + j;
+    board.appendChild(cell);
   }
+}
+
+initGeneralBoard();
+
+document.querySelectorAll(".cell > img").forEach((image) => {
+  image.addEventListener("click", (event) => {
+    let src = image.src;
+    let rank = image.className.substring(0, 1);
+    let file = image.className.substring(1, 2);
+    let color = src.substring(src.lastIndexOf("/") + 1, src.lastIndexOf("_"));
+    let piece = src.substring(src.lastIndexOf("_") + 1, src.lastIndexOf("."));
+
+    console.log(rank, file, color, piece);
+    moveFromTo(rank, file, "g", "4", color, piece, true);
+  });
+});
+
+function moveFromTo(iRank, iFile, fRank, fFile, color, piece, legal) {
+  if (!legal) return;
+
+  let src = document.querySelector(
+    ".cell.r-" + iRank + ".f-" + iFile
+  ).innerHTML; // achha ok yes understandable
+  document.querySelector(".cell.r-" + iRank + ".f-" + iFile).innerHTML = "";
+  // document.querySelector(".cell.r-" + fRank + ".f-" + fFile).innerHTML = src; // this is null
 }
