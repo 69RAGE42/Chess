@@ -1,0 +1,30 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    width: 100vw;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.chess-board {
+    padding: 1rem;
+    height: calc(100vh - 8rem);
+    aspect-ratio: 1;
+    display: grid;
+    grid-template-columns: repeat(8, calc((100vh - 10.5rem) / 8));
+    grid-template-rows: repeat(8, calc((100vh - 10.5rem) / 8));
+    border: 5px solid red;
+    overflow: hidden;
+}
+
+.cell {
+    /* width: calc((100vh - 7rem) / 8); */
+    aspect-ratio: 1;
+    border: 1px solid black;
+}
