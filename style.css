@@ -29,7 +29,7 @@ body {
     height: calc(100vh - 10.5rem);
     aspect-ratio: 1;
     position: absolute;
-    background-color: hsl(0, 0%, 20%);
+    background-color: hsl(190, 74%, 20%);
     display: grid;
     grid-template-columns: repeat(8, 1fr);
     grid-template-rows: repeat(8, 1fr);
@@ -45,7 +45,6 @@ body {
     justify-content: center;
     align-items: center;
     font-size: 32px;
-    /* box-shadow: 0 0 0px 10px black; */
 }
 
 .piece-holder {
@@ -59,91 +58,27 @@ body {
     justify-items: center;
     align-items: center;
     z-index: 2;
+    transition: all 100ms ease-in;
     /* border: 5px solid transparent; */
 }
 
 img {
     width: calc((100vh - 16rem) / 8);
     aspect-ratio: 1;
-    transform: scale(1);
-    transition: all 100ms ease-in;
 }
 
-img:hover {
-    transform: scale(1.1);
+.cell.black {
+    background: linear-gradient(135deg, hsl(190, 74%, 16%), hsl(190, 75%, 24%));
 }
 
-/* Black Cells */
-
-.cell.r-h.f-1,
-.cell.r-h.f-3,
-.cell.r-h.f-5,
-.cell.r-h.f-7,
-.cell.r-g.f-2,
-.cell.r-g.f-4,
-.cell.r-g.f-6,
-.cell.r-g.f-8,
-.cell.r-f.f-1,
-.cell.r-f.f-3,
-.cell.r-f.f-5,
-.cell.r-f.f-7,
-.cell.r-e.f-2,
-.cell.r-e.f-4,
-.cell.r-e.f-6,
-.cell.r-e.f-8,
-.cell.r-d.f-1,
-.cell.r-d.f-3,
-.cell.r-d.f-5,
-.cell.r-d.f-7,
-.cell.r-c.f-2,
-.cell.r-c.f-4,
-.cell.r-c.f-6,
-.cell.r-c.f-8,
-.cell.r-b.f-1,
-.cell.r-b.f-3,
-.cell.r-b.f-5,
-.cell.r-b.f-7,
-.cell.r-a.f-2,
-.cell.r-a.f-4,
-.cell.r-a.f-6,
-.cell.r-a.f-8 {
-    background-color: hsl(0, 0%, 35%);
-    box-shadow: inset 0px 0px 5px 0px;
+.cell.white {
+    background: linear-gradient(315deg, hsl(176, 56%, 30%), hsl(176, 56%, 50%));
 }
 
-/* White Cells */
+.cell.cyan {
+    background: linear-gradient(hsl(200, 100%, 50%));
+}
 
-.cell.r-h.f-2,
-.cell.r-h.f-4,
-.cell.r-h.f-6,
-.cell.r-h.f-8,
-.cell.r-g.f-1,
-.cell.r-g.f-3,
-.cell.r-g.f-5,
-.cell.r-g.f-7,
-.cell.r-f.f-2,
-.cell.r-f.f-4,
-.cell.r-f.f-6,
-.cell.r-f.f-8,
-.cell.r-e.f-1,
-.cell.r-e.f-3,
-.cell.r-e.f-5,
-.cell.r-e.f-7,
-.cell.r-d.f-2,
-.cell.r-d.f-4,
-.cell.r-d.f-6,
-.cell.r-d.f-8,
-.cell.r-c.f-1,
-.cell.r-c.f-3,
-.cell.r-c.f-5,
-.cell.r-c.f-7,
-.cell.r-b.f-2,
-.cell.r-b.f-4,
-.cell.r-b.f-6,
-.cell.r-b.f-8,
-.cell.r-a.f-1,
-.cell.r-a.f-3,
-.cell.r-a.f-5,
-.cell.r-a.f-7 {
-    background-color: hsl(0, 0%, 80%);
+.cell.red {
+    background-color: hsl(0, 100%, 60%);
 }

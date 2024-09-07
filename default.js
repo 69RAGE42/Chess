@@ -26,15 +26,8 @@ export function initGeneralBoard() {
 
             let color = general[i][j].substring(0, 1);
             let piece = general[i][j].substring(1, 2);
-            let count = general[i][j].substring(2, 3);
 
-            renderPiece(
-                String.fromCharCode(k + 96),
-                j + 1,
-                `${color}_${piece}`,
-                i,
-                j
-            );
+            renderPiece(String.fromCharCode(k + 96), j + 1, `${color}_${piece}`, i, j);
         }
     }
 }
