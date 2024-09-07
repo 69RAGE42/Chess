@@ -13,7 +13,7 @@ const pieceHolder = document.querySelector(".piece-holder");
 
 export function renderPiece(rank, file, piece, row, col) {
     let p = document.createElement("img");
-    p.src = "./assets/" + piece + ".svg";
+    p.src = "./assets/chess_pieces/" + piece + ".svg";
     p.style.gridArea = `${row + 1}/${col + 1}`;
     p.className = rank + file;
     pieceHolder.appendChild(p);
