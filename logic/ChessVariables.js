@@ -38,7 +38,7 @@ export const CHESS_MOVE_TYPE = {
 
     STRAIGHT:	1 << 0,   	// Finished
     DIAGONAL:	1 << 1,   	// Finished
-    KING:	1 << 2,     // Finished
-    KNIGHT:	1 << 3,		// Finished
-    PAWN:	1 << 4,     // Finished
+    KING:		1 << 2,     // Finished
+    KNIGHT:		1 << 3,		// Finished
+    PAWN:		1 << 4,     // Finished
 };
