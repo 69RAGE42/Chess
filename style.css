@@ -1,84 +1,104 @@
 * {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
+	margin: 0;
+	padding: 0;
+	box-sizing: border-box;
 }
 
 body {
-    width: 100vw;
-    height: 100vh;
-    display: flex;
-    background-image: url("assets/background.jpg");
-    background-position: center;
-    background-repeat: no-repeat;
-    background-size: cover;
-    justify-content: center;
-    align-items: center;
+	width: 100vw;
+	height: 100vh;
+	display: flex;
+	background-image: url("assets/background.jpg");
+	background-position: center;
+	background-repeat: no-repeat;
+	background-size: cover;
+	justify-content: center;
+	align-items: center;
 }
 
 .chess-board {
-    padding: 1rem;
-    height: calc(100vh - 8rem);
-    aspect-ratio: 1;
-    position: relative;
-    border: 5px solid red;
-    overflow: hidden;
+	padding: 1rem;
+	height: calc(100vh - 8rem);
+	aspect-ratio: 1;
+	position: relative;
+	/* border: 5px solid red; */
+	overflow: hidden;
 }
 
 .cell-holder {
-    height: calc(100vh - 10.5rem);
-    aspect-ratio: 1;
-    position: absolute;
-    background-color: hsl(190, 74%, 20%);
-    display: grid;
-    grid-template-columns: repeat(8, 1fr);
-    grid-template-rows: repeat(8, 1fr);
-    gap: 0.5px;
-    z-index: 1;
-    border: 1px solid black;
+	height: calc(100vh - 10.5rem);
+	aspect-ratio: 1;
+	position: absolute;
+	background-color: hsl(190, 74%, 20%);
+	display: grid;
+	grid-template-columns: repeat(8, 1fr);
+	grid-template-rows: repeat(8, 1fr);
+	gap: 0.5px;
+	z-index: 1;
+	border: 1px solid black;
 }
 
 .cell {
-    width: calc((100vh - 11rem) / 8);
-    aspect-ratio: 1;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    font-size: 32px;
+	width: calc((100vh - 11rem) / 8);
+	aspect-ratio: 1;
+	display: flex;
+	position: relative;
+	justify-content: center;
+	align-items: center;
+	font-size: 32px;
 }
 
 .piece-holder {
-    height: calc(100vh - 10.5rem);
-    aspect-ratio: 1;
-    position: absolute;
+	height: calc(100vh - 10.5rem);
+	aspect-ratio: 1;
+	position: absolute;
 
-    display: grid;
-    grid-template-columns: repeat(8, 1fr);
-    grid-template-rows: repeat(8, 1fr);
-    justify-items: center;
-    align-items: center;
-    z-index: 2;
-    transition: all 100ms ease-in;
-    /* border: 5px solid transparent; */
+	display: grid;
+	grid-template-columns: repeat(8, 1fr);
+	grid-template-rows: repeat(8, 1fr);
+	justify-items: center;
+	align-items: center;
+	z-index: 2;
+	transition: all 100ms ease-in;
+	/* border: 5px solid transparent; */
 }
 
 img {
-    width: calc((100vh - 16rem) / 8);
-    aspect-ratio: 1;
+	width: calc((100vh - 16rem) / 8);
+	aspect-ratio: 1;
+	filter: drop-shadow(0px 0px 6px hsla(0, 0%, 0%, 0.4));
+	/* transition: transform 150ms ease-in, filter 150ms ease-in; */
 }
 
+/* img:hover {
+    filter: drop-shadow(0px 0px 8px hsla(0, 0%, 0%, 0.6));
+    transform: scale(1.1);
+} */
+
 .cell.black {
-    background: linear-gradient(135deg, hsl(190, 74%, 16%), hsl(190, 75%, 24%));
+	background: linear-gradient(135deg, hsl(190, 74%, 16%), hsl(190, 75%, 24%));
 }
 
 .cell.white {
-    background: linear-gradient(315deg, hsl(176, 56%, 30%), hsl(176, 56%, 50%));
+	background: linear-gradient(315deg, hsl(176, 56%, 30%), hsl(176, 56%, 50%));
 }
 
-.cell.cyan {
-    background: linear-gradient(hsl(200, 100%, 50%));
+.fa-solid {
+	position: absolute;
+	color: hsla(0, 0%, 80%, 0.75);
+	/* font-size: 1.5rem; */
+	font-size: 2.5vmin;
+	text-shadow: hsla(0, 0%, 60%, 1) 0 0 20px;
+	transform: scale(0);
+	transition: transform 100ms ease-in-out;
 }
 
-.cell.red {
-    background-color: hsl(0, 100%, 60%);
+.fa-regular {
+	position: absolute;
+	color: hsla(360, 100%, 50%, 0.75);
+	/* font-size: 5rem; */
+	font-size: 8vmin;
+	text-shadow: hsla(360, 100%, 50%, 0.9) 0 0 16px;
+	transform: scale(0);
+	transition: transform 100ms ease-in-out;
 }
