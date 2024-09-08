@@ -25,13 +25,13 @@ export class ChessPiece {
             this.moveType = CHESS_MOVE_TYPE.KNIGHT
 
         if (this.isKing())
-            this.moveType = CHESS_MOVE_TYPE.AROUND
+            this.moveType = CHESS_MOVE_TYPE.KING
 
         if (this.isPawn())
             this.moveType = CHESS_MOVE_TYPE.PAWN
 
         if (this.isQueen())
-            this.moveType = CHESS_MOVE_TYPE.AROUND | CHESS_MOVE_TYPE.STRAIGHT | CHESS_MOVE_TYPE.DIAGONAL
+            this.moveType = CHESS_MOVE_TYPE.STRAIGHT | CHESS_MOVE_TYPE.DIAGONAL
     }
 
     isRook() {
@@ -65,6 +65,17 @@ export class ChessPiece {
 
         if (this.moveType & CHESS_MOVE_TYPE.PAWN) {
             let pawnNumPos = this.pawnInitialMove ? 1 : 0;
+
+            // special case, pawns can move diagonally if there's an enemy piece
+            if (curPos.x - 1 >= 0 && curPos.x + 1 <= 7) {
+                let piece = this.board.getPieceOnPosition({ x: curPos.x - 1, y: curPos.y + 1 })
+                if (piece && piece.color != this.color)
+                    movablePosArr.push({ x: curPos.x - 1, y: curPos.y + 1 })
+
+                piece = this.board.getPieceOnPosition({ x: curPos.x + 1, y: curPos.y + 1 })
+                if (piece && piece.color != this.color)
+                    movablePosArr.push({ x: curPos.x + 1, y: curPos.y + 1 })
+            }
 
             // get moves on y axis (ranks)
             for (let i = curPos.y; i != curPos.y + 2 + pawnNumPos; i++) {
@@ -341,6 +352,40 @@ export class ChessPiece {
                 }
                 else
                     movablePosArr.push({ x: curPos.x, y: i })
+            }
+        }
+
+        if (this.moveType & CHESS_MOVE_TYPE.KNIGHT) {
+            if (curPos.x - 1 >= 0 && curPos.x + 1 <= 7) {
+                // top
+                if (!this.board.getPieceOnPosition({ x: curPos.x + 1, y: curPos.y - 2 }))
+                    movablePosArr.push({ x: curPos.x + 1, y: curPos.y - 2 })
+
+                if (!this.board.getPieceOnPosition({ x: curPos.x - 1, y: curPos.y - 2 }))
+                    movablePosArr.push({ x: curPos.x - 1, y: curPos.y - 2 })
+
+                // bottom
+                if (!this.board.getPieceOnPosition({ x: curPos.x + 1, y: curPos.y + 2 }))
+                    movablePosArr.push({ x: curPos.x + 1, y: curPos.y + 2 })
+
+                if (!this.board.getPieceOnPosition({ x: curPos.x - 1, y: curPos.y + 2 }))
+                    movablePosArr.push({ x: curPos.x - 1, y: curPos.y + 2 })
+            }
+
+            if (curPos.y - 1 >= 0 && curPos.y + 1 <= 7) {
+                // right
+                if (!this.board.getPieceOnPosition({ x: curPos.x + 2, y: curPos.y + 1 }))
+                    movablePosArr.push({ x: curPos.x + 2, y: curPos.y + 1 })
+
+                if (!this.board.getPieceOnPosition({ x: curPos.x + 2, y: curPos.y - 1 }))
+                    movablePosArr.push({ x: curPos.x + 2, y: curPos.y - 1 })
+
+                // left
+                if (!this.board.getPieceOnPosition({ x: curPos.x - 2, y: curPos.y + 1 }))
+                    movablePosArr.push({ x: curPos.x - 2, y: curPos.y + 1 })
+
+                if (!this.board.getPieceOnPosition({ x: curPos.x - 2, y: curPos.y - 1 }))
+                    movablePosArr.push({ x: curPos.x - 2, y: curPos.y - 1 })
             }
         }
 
