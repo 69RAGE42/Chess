@@ -9,7 +9,6 @@ export const defaultBoard = [
     ["♖", "♘", "♗", "♕", "♔", "♗", "♘", "♖"],
 ];
 
-// this is technically an enum, cannot directly use "enum" keyword because that is typescript only
 export const CHESS_PIECE_BLACK = {
     KNIGHT:	"♞",
     ROOK:	"♜",

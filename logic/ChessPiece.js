@@ -356,36 +356,56 @@ export class ChessPiece {
         }
 
         if (this.moveType & CHESS_MOVE_TYPE.KNIGHT) {
-            if (curPos.x - 1 >= 0 && curPos.x + 1 <= 7) {
-                // top
-                if (!this.board.getPieceOnPosition({ x: curPos.x + 1, y: curPos.y - 2 }))
-                    movablePosArr.push({ x: curPos.x + 1, y: curPos.y - 2 })
+            // top
+            if (curPos.y - 2 >= 0) {
+                if (curPos.x - 1 >= 0) {
+                    if (!this.board.getPieceOnPosition({ x: curPos.x - 1, y: curPos.y - 2 }))
+                        movablePosArr.push({ x: curPos.x - 1, y: curPos.y - 2 })
+                }
 
-                if (!this.board.getPieceOnPosition({ x: curPos.x - 1, y: curPos.y - 2 }))
-                    movablePosArr.push({ x: curPos.x - 1, y: curPos.y - 2 })
-
-                // bottom
-                if (!this.board.getPieceOnPosition({ x: curPos.x + 1, y: curPos.y + 2 }))
-                    movablePosArr.push({ x: curPos.x + 1, y: curPos.y + 2 })
-
-                if (!this.board.getPieceOnPosition({ x: curPos.x - 1, y: curPos.y + 2 }))
-                    movablePosArr.push({ x: curPos.x - 1, y: curPos.y + 2 })
+                if (curPos.x + 1 <= 7) {
+                    if (!this.board.getPieceOnPosition({ x: curPos.x + 1, y: curPos.y - 2 }))
+                        movablePosArr.push({ x: curPos.x + 1, y: curPos.y - 2 })
+                }
             }
 
-            if (curPos.y - 1 >= 0 && curPos.y + 1 <= 7) {
-                // right
-                if (!this.board.getPieceOnPosition({ x: curPos.x + 2, y: curPos.y + 1 }))
-                    movablePosArr.push({ x: curPos.x + 2, y: curPos.y + 1 })
+            // bottom
+            if (curPos.y + 2 <= 7) {
+                if (curPos.x - 1 >= 0) {
+                    if (!this.board.getPieceOnPosition({ x: curPos.x - 1, y: curPos.y + 2 }))
+                        movablePosArr.push({ x: curPos.x - 1, y: curPos.y + 2 })
+                }
 
-                if (!this.board.getPieceOnPosition({ x: curPos.x + 2, y: curPos.y - 1 }))
-                    movablePosArr.push({ x: curPos.x + 2, y: curPos.y - 1 })
+                if (curPos.x + 1 <= 7) {
+                    if (!this.board.getPieceOnPosition({ x: curPos.x + 1, y: curPos.y + 2 }))
+                        movablePosArr.push({ x: curPos.x + 1, y: curPos.y + 2 })
+                }
+            }
 
-                // left
-                if (!this.board.getPieceOnPosition({ x: curPos.x - 2, y: curPos.y + 1 }))
-                    movablePosArr.push({ x: curPos.x - 2, y: curPos.y + 1 })
+            // left
+            if (curPos.x - 2 >= 0) {
+                if (curPos.y - 1 >= 0) {
+                    if (!this.board.getPieceOnPosition({ x: curPos.x - 2, y: curPos.y - 1 }))
+                        movablePosArr.push({ x: curPos.x - 2, y: curPos.y - 1 })
+                }
 
-                if (!this.board.getPieceOnPosition({ x: curPos.x - 2, y: curPos.y - 1 }))
-                    movablePosArr.push({ x: curPos.x - 2, y: curPos.y - 1 })
+                if (curPos.y + 1 <= 7) {
+                    if (!this.board.getPieceOnPosition({ x: curPos.x - 2, y: curPos.y + 1 }))
+                        movablePosArr.push({ x: curPos.x - 2, y: curPos.y + 1 })
+                }
+            }
+
+            // right
+            if (curPos.x + 2 <= 7) {
+                if (curPos.y - 1 >= 0) {
+                    if (!this.board.getPieceOnPosition({ x: curPos.x + 2, y: curPos.y - 1 }))
+                        movablePosArr.push({ x: curPos.x + 2, y: curPos.y - 1 })
+                }
+
+                if (curPos.y + 1 <= 7) {
+                    if (!this.board.getPieceOnPosition({ x: curPos.x + 2, y: curPos.y + 1 }))
+                        movablePosArr.push({ x: curPos.x + 2, y: curPos.y + 1 })
+                }
             }
         }
 
