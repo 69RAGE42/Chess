@@ -7,8 +7,10 @@ export class ChessPiece {
 		this.type = type;
 		this.position = { x: pos.x, y: pos.y };
 
-		if (this.isPawn())
+		if (this.isPawn()) {
 			this.pawnInitialMove = true;
+			this.canEnPassant = false;
+		}
 
 		this.moveType = CHESS_MOVE_TYPE.DEFAULT;
 		this.setupMoveType();
@@ -69,12 +71,28 @@ export class ChessPiece {
 			// get moves on y axis (ranks)
 			if (this.color === CHESS_COLOR.BLACK) {
 				// special case, pawns can move diagonally if there's an enemy piece
-				if (curPos.x - 1 >= 0 && curPos.x + 1 <= 7) {
+				if (curPos.x - 1 >= 0) {
 					let piece = this.board.getPieceOnPosition({ x: curPos.x - 1, y: curPos.y + 1 });
 					if (piece && piece.color != this.color) movablePosArr.push({ x: curPos.x - 1, y: curPos.y + 1, isKillingMove: true, killTarget: piece });
 
-					piece = this.board.getPieceOnPosition({ x: curPos.x + 1, y: curPos.y + 1 });
+					// en passant
+					if (!piece) {
+						piece = this.board.getPieceOnPosition({ x: curPos.x - 1, y: curPos.y })
+						if (piece && piece.color != this.color && piece.canEnPassant)
+							movablePosArr.push({ x: curPos.x - 1, y: curPos.y + 1, isKillingMove: true, killTarget: piece })
+					}
+				}
+
+				if (curPos.x + 1 < 8) {
+					let piece = this.board.getPieceOnPosition({ x: curPos.x + 1, y: curPos.y + 1 });
 					if (piece && piece.color != this.color) movablePosArr.push({ x: curPos.x + 1, y: curPos.y + 1, isKillingMove: true, killTarget: piece });
+
+					// en passant
+					if (!piece) {
+						piece = this.board.getPieceOnPosition({ x: curPos.x + 1, y: curPos.y })
+						if (piece && piece.color != this.color && piece.canEnPassant)
+							movablePosArr.push({ x: curPos.x + 1, y: curPos.y + 1, isKillingMove: true, killTarget: piece })
+					}
 				}
 
 				for (let i = curPos.y; i != curPos.y + 2 + pawnNumPos; i++) {
@@ -88,12 +106,28 @@ export class ChessPiece {
 				}
 			} else {
 				// special case, pawns can move diagonally if there's an enemy piece
-				if (curPos.x - 1 >= 0 && curPos.x + 1 <= 7) {
+				if (curPos.x - 1 >= 0) {
 					let piece = this.board.getPieceOnPosition({ x: curPos.x - 1, y: curPos.y - 1 });
-					if (piece && piece.color != this.color) movablePosArr.push({ x: curPos.x - 1, y: curPos.y - 1 });
+					if (piece && piece.color != this.color) movablePosArr.push({ x: curPos.x - 1, y: curPos.y - 1, isKillingMove: true, killTarget: piece });
 
-					piece = this.board.getPieceOnPosition({ x: curPos.x + 1, y: curPos.y - 1 });
-					if (piece && piece.color != this.color) movablePosArr.push({ x: curPos.x + 1, y: curPos.y - 1 });
+					// en passant
+					if (!piece) {
+						piece = this.board.getPieceOnPosition({ x: curPos.x - 1, y: curPos.y })
+						if (piece && piece.color != this.color && piece.canEnPassant)
+							movablePosArr.push({ x: curPos.x - 1, y: curPos.y - 1, isKillingMove: true, killTarget: piece })
+					}
+				}
+
+				if (curPos.x + 1 < 8) {
+					let piece = this.board.getPieceOnPosition({ x: curPos.x + 1, y: curPos.y - 1 });
+					if (piece && piece.color != this.color) movablePosArr.push({ x: curPos.x + 1, y: curPos.y - 1, isKillingMove: true, killTarget: piece });
+
+					// en passant
+					if (!piece) {
+						piece = this.board.getPieceOnPosition({ x: curPos.x + 1, y: curPos.y })
+						if (piece && piece.color != this.color && piece.canEnPassant)
+							movablePosArr.push({ x: curPos.x + 1, y: curPos.y - 1, isKillingMove: true, killTarget: piece })
+					}
 				}
 
 				for (let i = curPos.y; i != curPos.y - 2 - pawnNumPos; i--) {

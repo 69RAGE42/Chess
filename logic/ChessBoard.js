@@ -12,6 +12,7 @@ export class ChessBoard {
 			[CHESS_COLOR.WHITE]: [],
 			[CHESS_COLOR.BLACK]: []
 		};
+		this.currentTurn = ""
 	}
 
 	async init() {
@@ -27,6 +28,8 @@ export class ChessBoard {
 				}
 			}
 		}
+
+		this.currentTurn = CHESS_COLOR.WHITE
 	}
 
 	getPieceOnPosition(pos) {
@@ -53,6 +56,28 @@ export class ChessBoard {
 		// Logical position
 		this.positions[piece.position.y][piece.position.x] = "";
 		this.positions[newPos.y][newPos.x] = piece.type;
+
+		// EN PASSANT
+		if (piece.isPawn() && piece.pawnInitialMove) {
+			piece.pawnInitialMove = false;
+
+			if (Math.abs(newPos.y - piece.position.y) === 2) {
+				if (newPos.x - 1 >= 0) {
+					let otherPiece = this.getPieceOnPosition({ x: newPos.x - 1, y: newPos.y })
+
+					if (otherPiece && otherPiece.color != piece.color)
+						piece.canEnPassant = true;
+				}
+
+				if (newPos.x + 1 < 8) {
+					let otherPiece = this.getPieceOnPosition({ x: newPos.x + 1, y: newPos.y })
+
+					if (otherPiece && otherPiece.color != piece.color)
+						piece.canEnPassant = true;
+				}
+			}
+		}
+
 		piece.position.x = newPos.x;
 		piece.position.y = newPos.y;
 
@@ -61,7 +86,22 @@ export class ChessBoard {
 		visualPiece.className = `${String.fromCharCode(newPos.x + 97)}${8 - newPos.y}`;
 		forceGridAnimation();
 
-		if (piece.isPawn() && piece.pawnInitialMove) piece.pawnInitialMove = false;
+		if (this.currentTurn === CHESS_COLOR.WHITE)
+			this.currentTurn = CHESS_COLOR.BLACK
+		else
+			this.currentTurn = CHESS_COLOR.WHITE
+	}
+
+	kill(piece, newPos, targetPiece) {
+		let visualTargetPiece = document.querySelector(`img.${String.fromCharCode(targetPiece.position.x + 97)}${8 - targetPiece.position.y}`);
+
+		// En passant
+		// if (targetPiece.canEnPassant) {
+			this.positions[targetPiece.position.y][targetPiece.position.x] = ""
+			visualTargetPiece.style.display = "none"
+
+			return this.move(piece, newPos)
+		// }
 	}
 
 	getLogicalBoard() {
