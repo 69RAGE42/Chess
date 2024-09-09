@@ -95,10 +95,29 @@ export class ChessBoard {
 	kill(piece, newPos, targetPiece) {
 		let visualTargetPiece = document.querySelector(`img.${String.fromCharCode(targetPiece.position.x + 97)}${8 - targetPiece.position.y}`);
 
+		let targetPieceIndex = 0;
+
 		// En passant
 		// if (targetPiece.canEnPassant) {
 			this.positions[targetPiece.position.y][targetPiece.position.x] = ""
 			visualTargetPiece.style.display = "none"
+
+			this.pieces[targetPiece.color].map((e, i) => {
+
+
+				// very static test
+				if (i === 10) {
+					console.log(e.position)
+					console.log(targetPiece.position)
+				}
+
+				if (e.position.x === targetPiece.position.x && e.position.y === targetPiece.position.y) {
+					console.log("gm test: ", i)
+					targetPieceIndex = i
+				}
+			})
+
+			this.pieces[targetPiece.color].splice(targetPieceIndex, 1)
 
 			return this.move(piece, newPos)
 		// }
