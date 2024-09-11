@@ -148,8 +148,12 @@ export class ChessPiece {
 				// ignore self
 				if (curPos.x == i) continue;
 
-				if (this.board.getPieceOnPosition({ x: i, y: curPos.y })) {
+				let blockingPiece = this.board.getPieceOnPosition({ x: i, y: curPos.y })
+
+				if (blockingPiece) {
 					isBlocked = true;
+					if (blockingPiece.color != this.color)
+						movablePosArr.push({ x: i, y: curPos.y, isKillingMove: true, killTarget: blockingPiece })
 					break;
 				} else movablePosArr.push({ x: i, y: curPos.y });
 			}
@@ -160,8 +164,12 @@ export class ChessPiece {
 				// ignore self
 				if (curPos.x == i) continue;
 
-				if (this.board.getPieceOnPosition({ x: i, y: curPos.y })) {
+				let blockingPiece = this.board.getPieceOnPosition({ x: i, y: curPos.y })
+
+				if (blockingPiece) {
 					isBlocked = true;
+					if (blockingPiece.color != this.color)
+						movablePosArr.push({ x: i, y: curPos.y, isKillingMove: true, killTarget: blockingPiece })
 					break;
 				} else movablePosArr.push({ x: i, y: curPos.y });
 			}
@@ -173,8 +181,12 @@ export class ChessPiece {
 				// ignore self
 				if (curPos.y == i) continue;
 
-				if (this.board.getPieceOnPosition({ x: curPos.x, y: i })) {
+				let blockingPiece = this.board.getPieceOnPosition({ x: curPos.x, y: i })
+
+				if (blockingPiece) {
 					isBlocked = true;
+					if (blockingPiece.color != this.color)
+						movablePosArr.push({ x: curPos.x, y: i, isKillingMove: true, killTarget: blockingPiece })
 					break;
 				} else movablePosArr.push({ x: curPos.x, y: i });
 			}
@@ -185,8 +197,12 @@ export class ChessPiece {
 				// ignore self
 				if (curPos.y == i) continue;
 
-				if (this.board.getPieceOnPosition({ x: curPos.x, y: i })) {
+				let blockingPiece = this.board.getPieceOnPosition({ x: curPos.x, y: i })
+
+				if (blockingPiece) {
 					isBlocked = true;
+					if (blockingPiece.color != this.color)
+						movablePosArr.push({ x: curPos.x, y: i, isKillingMove: true, killTarget: blockingPiece })
 					break;
 				} else movablePosArr.push({ x: curPos.x, y: i });
 			}
@@ -197,8 +213,12 @@ export class ChessPiece {
 				// ignore self
 				if (curPos.x == i && curPos.y == j) continue;
 
-				if (this.board.getPieceOnPosition({ x: i, y: j })) {
+				let blockingPiece = this.board.getPieceOnPosition({ x: i, y: j })
+
+				if (blockingPiece) {
 					isBlocked = true;
+					if (blockingPiece.color != this.color)
+						movablePosArr.push({ x: i, y: j, isKillingMove: true, killTarget: blockingPiece })
 					break;
 				} else movablePosArr.push({ x: i, y: j });
 			}
@@ -210,8 +230,12 @@ export class ChessPiece {
 				// ignore self
 				if (curPos.x == i && curPos.y == j) continue;
 
-				if (this.board.getPieceOnPosition({ x: i, y: j })) {
+				let blockingPiece = this.board.getPieceOnPosition({ x: i, y: j })
+
+				if (blockingPiece) {
 					isBlocked = true;
+					if (blockingPiece.color != this.color)
+						movablePosArr.push({ x: i, y: j, isKillingMove: true, killTarget: blockingPiece })
 					break;
 				} else movablePosArr.push({ x: i, y: j });
 			}
@@ -222,8 +246,12 @@ export class ChessPiece {
 				// ignore self
 				if (curPos.x == i && curPos.y == j) continue;
 
-				if (this.board.getPieceOnPosition({ x: i, y: j })) {
+				let blockingPiece = this.board.getPieceOnPosition({ x: i, y: j })
+
+				if (blockingPiece) {
 					isBlocked = true;
+					if (blockingPiece.color != this.color)
+						movablePosArr.push({ x: i, y: j, isKillingMove: true, killTarget: blockingPiece })
 					break;
 				} else movablePosArr.push({ x: i, y: j });
 			}
@@ -234,8 +262,12 @@ export class ChessPiece {
 				// ignore self
 				if (curPos.x == i && curPos.y == j) continue;
 
-				if (this.board.getPieceOnPosition({ x: i, y: j })) {
+				let blockingPiece = this.board.getPieceOnPosition({ x: i, y: j })
+
+				if (blockingPiece) {
 					isBlocked = true;
+					if (blockingPiece.color != this.color)
+						movablePosArr.push({ x: i, y: j, isKillingMove: true, killTarget: blockingPiece })
 					break;
 				} else movablePosArr.push({ x: i, y: j });
 			}
@@ -246,8 +278,12 @@ export class ChessPiece {
 				// ignore self
 				if (curPos.x == i && curPos.y == j) continue;
 
-				if (this.board.getPieceOnPosition({ x: i, y: j })) {
+				let blockingPiece = this.board.getPieceOnPosition({ x: i, y: j })
+
+				if (blockingPiece) {
 					isBlocked = true;
+					if (blockingPiece.color != this.color)
+						movablePosArr.push({ x: i, y: j, isKillingMove: true, killTarget: blockingPiece })
 					break;
 				} else movablePosArr.push({ x: i, y: j });
 			}
@@ -258,8 +294,12 @@ export class ChessPiece {
 				// ignore self
 				if (curPos.x == i && curPos.y == j) continue;
 
-				if (this.board.getPieceOnPosition({ x: i, y: j })) {
+				let blockingPiece = this.board.getPieceOnPosition({ x: i, y: j })
+
+				if (blockingPiece) {
 					isBlocked = true;
+					if (blockingPiece.color != this.color)
+						movablePosArr.push({ x: i, y: j, isKillingMove: true, killTarget: blockingPiece })
 					break;
 				} else movablePosArr.push({ x: i, y: j });
 			}
@@ -270,8 +310,12 @@ export class ChessPiece {
 				// ignore self
 				if (curPos.x == i && curPos.y == j) continue;
 
-				if (this.board.getPieceOnPosition({ x: i, y: j })) {
+				let blockingPiece = this.board.getPieceOnPosition({ x: i, y: j })
+
+				if (blockingPiece) {
 					isBlocked = true;
+					if (blockingPiece.color != this.color)
+						movablePosArr.push({ x: i, y: j, isKillingMove: true, killTarget: blockingPiece })
 					break;
 				} else movablePosArr.push({ x: i, y: j });
 			}
@@ -282,8 +326,12 @@ export class ChessPiece {
 				// ignore self
 				if (curPos.x == i && curPos.y == j) continue;
 
-				if (this.board.getPieceOnPosition({ x: i, y: j })) {
+				let blockingPiece = this.board.getPieceOnPosition({ x: i, y: j })
+
+				if (blockingPiece) {
 					isBlocked = true;
+					if (blockingPiece.color != this.color)
+						movablePosArr.push({ x: i, y: j, isKillingMove: true, killTarget: blockingPiece })
 					break;
 				} else movablePosArr.push({ x: i, y: j });
 			}
@@ -293,8 +341,12 @@ export class ChessPiece {
 				// ignore self
 				if (curPos.x == i) continue;
 
-				if (this.board.getPieceOnPosition({ x: i, y: curPos.y })) {
+				let blockingPiece = this.board.getPieceOnPosition({ x: i, y: curPos.y })
+
+				if (blockingPiece) {
 					isBlocked = true;
+					if (blockingPiece.color != this.color)
+						movablePosArr.push({ x: i, y: curPos.y, isKillingMove: true, killTarget: blockingPiece })
 					break;
 				} else movablePosArr.push({ x: i, y: curPos.y });
 			}
@@ -305,8 +357,12 @@ export class ChessPiece {
 				// ignore self
 				if (curPos.x == i) continue;
 
-				if (this.board.getPieceOnPosition({ x: i, y: curPos.y })) {
+				let blockingPiece = this.board.getPieceOnPosition({ x: i, y: curPos.y })
+
+				if (blockingPiece) {
 					isBlocked = true;
+					if (blockingPiece.color != this.color)
+						movablePosArr.push({ x: i, y: curPos.y, isKillingMove: true, killTarget: blockingPiece })
 					break;
 				} else movablePosArr.push({ x: i, y: curPos.y });
 			}
@@ -318,8 +374,12 @@ export class ChessPiece {
 				// ignore self
 				if (curPos.y == i) continue;
 
-				if (this.board.getPieceOnPosition({ x: curPos.x, y: i })) {
+				let blockingPiece = this.board.getPieceOnPosition({ x: curPos.x, y: i })
+
+				if (blockingPiece) {
 					isBlocked = true;
+					if (blockingPiece.color != this.color)
+						movablePosArr.push({ x: curPos.x, y: i, isKillingMove: true, killTarget: blockingPiece })
 					break;
 				} else movablePosArr.push({ x: curPos.x, y: i });
 			}
@@ -330,8 +390,12 @@ export class ChessPiece {
 				// ignore self
 				if (curPos.y == i) continue;
 
-				if (this.board.getPieceOnPosition({ x: curPos.x, y: i })) {
+				let blockingPiece = this.board.getPieceOnPosition({ x: curPos.x, y: i })
+
+				if (blockingPiece) {
 					isBlocked = true;
+					if (blockingPiece.color != this.color)
+						movablePosArr.push({ x: curPos.x, y: i, isKillingMove: true, killTarget: blockingPiece })
 					break;
 				} else movablePosArr.push({ x: curPos.x, y: i });
 			}
@@ -341,12 +405,22 @@ export class ChessPiece {
 			// top
 			if (curPos.y - 2 >= 0) {
 				if (curPos.x - 1 >= 0) {
-					if (!this.board.getPieceOnPosition({ x: curPos.x - 1, y: curPos.y - 2 }))
+					let otherPiece = this.board.getPieceOnPosition({ x: curPos.x - 1, y: curPos.y - 2 })
+					if (otherPiece) {
+						if (otherPiece.color != this.color)
+							movablePosArr.push({ x: curPos.x - 1, y: curPos.y - 2, isKillingMove: true, killTarget: otherPiece })
+					}
+					else
 						movablePosArr.push({ x: curPos.x - 1, y: curPos.y - 2 });
 				}
 
 				if (curPos.x + 1 <= 7) {
-					if (!this.board.getPieceOnPosition({ x: curPos.x + 1, y: curPos.y - 2 }))
+					let otherPiece = this.board.getPieceOnPosition({ x: curPos.x + 1, y: curPos.y - 2 })
+					if (otherPiece) {
+						if (otherPiece.color != this.color)
+							movablePosArr.push({ x: curPos.x + 1, y: curPos.y - 2, isKillingMove: true, killTarget: otherPiece })
+					}
+					else
 						movablePosArr.push({ x: curPos.x + 1, y: curPos.y - 2 });
 				}
 			}
@@ -354,12 +428,22 @@ export class ChessPiece {
 			// bottom
 			if (curPos.y + 2 <= 7) {
 				if (curPos.x - 1 >= 0) {
-					if (!this.board.getPieceOnPosition({ x: curPos.x - 1, y: curPos.y + 2 }))
+					let otherPiece = this.board.getPieceOnPosition({ x: curPos.x - 1, y: curPos.y + 2 });
+					if (otherPiece) {
+						if (otherPiece.color != this.color)
+							movablePosArr.push({ x: curPos.x - 1, y: curPos.y + 2, isKillingMove: true, killTarget: otherPiece })
+					}
+					else
 						movablePosArr.push({ x: curPos.x - 1, y: curPos.y + 2 });
 				}
 
 				if (curPos.x + 1 <= 7) {
-					if (!this.board.getPieceOnPosition({ x: curPos.x + 1, y: curPos.y + 2 }))
+					let otherPiece = this.board.getPieceOnPosition({ x: curPos.x + 1, y: curPos.y + 2 });
+					if (otherPiece) {
+						if (otherPiece.color != this.color)
+							movablePosArr.push({ x: curPos.x + 1, y: curPos.y + 2, isKillingMove: true, killTarget: otherPiece })
+					}
+					else
 						movablePosArr.push({ x: curPos.x + 1, y: curPos.y + 2 });
 				}
 			}
@@ -367,12 +451,22 @@ export class ChessPiece {
 			// left
 			if (curPos.x - 2 >= 0) {
 				if (curPos.y - 1 >= 0) {
-					if (!this.board.getPieceOnPosition({ x: curPos.x - 2, y: curPos.y - 1 }))
+					let otherPiece = this.board.getPieceOnPosition({ x: curPos.x - 2, y: curPos.y - 1 })
+					if (otherPiece) {
+						if (otherPiece.color != this.color)
+							movablePosArr.push({ x: curPos.x - 2, y: curPos.y - 1, isKillingMove: true, killTarget: otherPiece })
+					}
+					else
 						movablePosArr.push({ x: curPos.x - 2, y: curPos.y - 1 });
 				}
 
 				if (curPos.y + 1 <= 7) {
-					if (!this.board.getPieceOnPosition({ x: curPos.x - 2, y: curPos.y + 1 }))
+					let otherPiece = this.board.getPieceOnPosition({ x: curPos.x - 2, y: curPos.y + 1 })
+					if (otherPiece) {
+						if (otherPiece.color != this.color)
+							movablePosArr.push({ x: curPos.x - 2, y: curPos.y + 1, isKillingMove: true, killTarget: otherPiece })
+					}
+					else
 						movablePosArr.push({ x: curPos.x - 2, y: curPos.y + 1 });
 				}
 			}
@@ -380,12 +474,22 @@ export class ChessPiece {
 			// right
 			if (curPos.x + 2 <= 7) {
 				if (curPos.y - 1 >= 0) {
-					if (!this.board.getPieceOnPosition({ x: curPos.x + 2, y: curPos.y - 1 }))
+					let otherPiece = this.board.getPieceOnPosition({ x: curPos.x + 2, y: curPos.y - 1 })
+					if (otherPiece) {
+						if (otherPiece.color != this.color)
+							movablePosArr.push({ x: curPos.x + 2, y: curPos.y - 1, isKillingMove: true, killTarget: otherPiece })
+					}
+					else
 						movablePosArr.push({ x: curPos.x + 2, y: curPos.y - 1 });
 				}
 
 				if (curPos.y + 1 <= 7) {
-					if (!this.board.getPieceOnPosition({ x: curPos.x + 2, y: curPos.y + 1 }))
+					let otherPiece = this.board.getPieceOnPosition({ x: curPos.x + 2, y: curPos.y + 1 })
+					if (otherPiece) {
+						if (otherPiece.color != this.color)
+							movablePosArr.push({ x: curPos.x + 2, y: curPos.y + 1, isKillingMove: true, killTarget: otherPiece })
+					}
+					else
 						movablePosArr.push({ x: curPos.x + 2, y: curPos.y + 1 });
 				}
 			}

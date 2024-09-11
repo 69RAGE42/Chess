@@ -97,30 +97,19 @@ export class ChessBoard {
 
 		let targetPieceIndex = 0;
 
-		// En passant
-		// if (targetPiece.canEnPassant) {
-			this.positions[targetPiece.position.y][targetPiece.position.x] = ""
-			visualTargetPiece.style.display = "none"
+		this.positions[targetPiece.position.y][targetPiece.position.x] = ""
+		visualTargetPiece.style.display = "none"
 
-			this.pieces[targetPiece.color].map((e, i) => {
+		this.pieces[targetPiece.color].map((e, i) => {
+			if (e.position.x === targetPiece.position.x && e.position.y === targetPiece.position.y) {
+				console.log("gm test: ", i)
+				targetPieceIndex = i
+			}
+		})
 
+		this.pieces[targetPiece.color].splice(targetPieceIndex, 1)
 
-				// very static test
-				if (i === 10) {
-					console.log(e.position)
-					console.log(targetPiece.position)
-				}
-
-				if (e.position.x === targetPiece.position.x && e.position.y === targetPiece.position.y) {
-					console.log("gm test: ", i)
-					targetPieceIndex = i
-				}
-			})
-
-			this.pieces[targetPiece.color].splice(targetPieceIndex, 1)
-
-			return this.move(piece, newPos)
-		// }
+		return this.move(piece, newPos)
 	}
 
 	getLogicalBoard() {
