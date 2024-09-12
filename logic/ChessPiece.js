@@ -66,7 +66,7 @@ export class ChessPiece {
 		let isBlocked = false;
 
 		if (this.moveType & CHESS_MOVE_TYPE.PAWN) {
-			let pawnNumPos = this.pawnInitialMove ? 1 : 0;
+			let pawnNumPos = this.pawnInitialMove ? 2 : 1;
 
 			// get moves on y axis (ranks)
 			if (this.color === CHESS_COLOR.BLACK) {
@@ -79,7 +79,7 @@ export class ChessPiece {
 					if (!piece) {
 						piece = this.board.getPieceOnPosition({ x: curPos.x - 1, y: curPos.y })
 						if (piece && piece.color != this.color && piece.canEnPassant)
-							movablePosArr.push({ x: curPos.x - 1, y: curPos.y + 1, isKillingMove: true, killTarget: piece })
+							movablePosArr.push({ x: curPos.x - 1, y: curPos.y + 1, isKillingMove: true, isEnPassant: true, killTarget: piece })
 					}
 				}
 
@@ -91,11 +91,11 @@ export class ChessPiece {
 					if (!piece) {
 						piece = this.board.getPieceOnPosition({ x: curPos.x + 1, y: curPos.y })
 						if (piece && piece.color != this.color && piece.canEnPassant)
-							movablePosArr.push({ x: curPos.x + 1, y: curPos.y + 1, isKillingMove: true, killTarget: piece })
+							movablePosArr.push({ x: curPos.x + 1, y: curPos.y + 1, isKillingMove: true, isEnPassant: true, killTarget: piece })
 					}
 				}
 
-				for (let i = curPos.y; i != curPos.y + 2 + pawnNumPos; i++) {
+				for (let i = curPos.y; i <= curPos.y + pawnNumPos && (curPos.y + pawnNumPos) < 8; i++) {
 					// ignore self
 					if (curPos.y == i) continue;
 
@@ -114,7 +114,7 @@ export class ChessPiece {
 					if (!piece) {
 						piece = this.board.getPieceOnPosition({ x: curPos.x - 1, y: curPos.y })
 						if (piece && piece.color != this.color && piece.canEnPassant)
-							movablePosArr.push({ x: curPos.x - 1, y: curPos.y - 1, isKillingMove: true, killTarget: piece })
+							movablePosArr.push({ x: curPos.x - 1, y: curPos.y - 1, isKillingMove: true, isEnPassant: true, killTarget: piece })
 					}
 				}
 
@@ -126,11 +126,11 @@ export class ChessPiece {
 					if (!piece) {
 						piece = this.board.getPieceOnPosition({ x: curPos.x + 1, y: curPos.y })
 						if (piece && piece.color != this.color && piece.canEnPassant)
-							movablePosArr.push({ x: curPos.x + 1, y: curPos.y - 1, isKillingMove: true, killTarget: piece })
+							movablePosArr.push({ x: curPos.x + 1, y: curPos.y - 1, isKillingMove: true, isEnPassant: true, killTarget: piece })
 					}
 				}
 
-				for (let i = curPos.y; i != curPos.y - 2 - pawnNumPos; i--) {
+				for (let i = curPos.y; i >= curPos.y - pawnNumPos && (curPos.y - pawnNumPos) >= 0; i--) {
 					// ignore self
 					if (curPos.y == i) continue;
 

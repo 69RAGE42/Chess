@@ -98,11 +98,10 @@ export class ChessBoard {
 		let targetPieceIndex = 0;
 
 		this.positions[targetPiece.position.y][targetPiece.position.x] = ""
-		visualTargetPiece.style.display = "none"
+		visualTargetPiece.remove()
 
 		this.pieces[targetPiece.color].map((e, i) => {
 			if (e.position.x === targetPiece.position.x && e.position.y === targetPiece.position.y) {
-				console.log("gm test: ", i)
 				targetPieceIndex = i
 			}
 		})

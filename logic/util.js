@@ -54,3 +54,25 @@ export function getChessPieceImage(strPiece) {
 
 	return str;
 }
+
+export function logicalToVisual(pos) {
+	return String.fromCharCode(pos.x + 97) + String(8 - pos.y)
+}
+
+export function visualToLogical(strPos) {
+	return {
+		x: strPos[0].charCodeAt(0) - 97,
+		y: 8 - +strPos[1]
+	}
+}
+
+let debugMode = false;
+
+export function makeGlobal(name, variable) {
+	if (debugMode === true)
+		globalThis[name] = variable;
+}
+
+export function setDebugMode(boolean) {
+	debugMode = boolean
+}
