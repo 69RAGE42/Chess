@@ -262,6 +262,6 @@ function attackedCell(pos) {
 }
 
 function checkGameState() {
-	if(board.check)
-		CHESS_SFX.CHECK.play()
+	// if(board.check)
+	// 	CHESS_SFX.CHECK.play()
 }

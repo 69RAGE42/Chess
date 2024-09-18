@@ -19,7 +19,7 @@ export const CHESS_PIECE_UNICODE = {
 }
 
 export const CHESS_SFX = {
-	CHECK: new Audio("https://www.myinstants.com/media/sounds/jixaw-metal-pipe-falling-sound.mp3")
+	CHECK: new Audio("")
 }
 
 export const CHESS_SERVER_URL = "http://127.0.0.1:3000/api"
