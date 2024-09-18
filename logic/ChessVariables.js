@@ -1,50 +1,3 @@
-export const defaultBoard = [
-	["♜", "♞", "♝", "♛", "♚", "♝", "♞", "♜"],
-	["♟︎", "♟︎", "♟︎", "♟︎", "♟︎", "♟︎", "♟︎", "♟︎"],
-	// ["", "♟︎", "", "♟︎", "", "♟︎", "", "♟︎"],
-	["", "", "", "", "", "", "", ""],
-	["", "", "", "", "", "", "", ""],
-	["", "", "", "", "", "", "", ""],
-	["", "", "", "", "", "", "", ""],
-	// ["", "", "", "", "", "", "", ""],
-	// ["♙", "", "♙", "", "♙", "", "♙", ""],
-	["♙", "♙", "♙", "♙", "♙", "♙", "♙", "♙"],
-	["♖", "♘", "♗", "♕", "♔", "♗", "♘", "♖"]
-];
-
-export const CHESS_PIECE_BLACK = {
-	KNIGHT: "♞",
-	ROOK: "♜",
-	BISHOP: "♝",
-	QUEEN: "♛",
-	KING: "♚",
-	PAWN: "♟︎"
-};
-
-export const CHESS_PIECE_WHITE = {
-	ROOK: "♖",
-	KNIGHT: "♘",
-	BISHOP: "♗",
-	QUEEN: "♕",
-	KING: "♔",
-	PAWN: "♙"
-};
-
-export const CHESS_COLOR = {
-	WHITE: "white",
-	BLACK: "black"
-};
-
-export const CHESS_MOVE_TYPE = {
-	DEFAULT: 0,
-
-	STRAIGHT: 1 << 0,
-	DIAGONAL: 1 << 1,
-	KING: 1 << 2,
-	KNIGHT: 1 << 3,
-	PAWN: 1 << 4
-};
-
 export const CHESS_PIECE_UNICODE = {
 	WHITE_KING: 9812,
 	BLACK_KING: 9818,
@@ -64,3 +17,9 @@ export const CHESS_PIECE_UNICODE = {
 	WHITE_PAWN: 9817,
 	BLACK_PAWN: 9823
 }
+
+export const CHESS_SFX = {
+	CHECK: new Audio("https://www.myinstants.com/media/sounds/jixaw-metal-pipe-falling-sound.mp3")
+}
+
+export const CHESS_SERVER_URL = "http://127.0.0.1:3000/api"

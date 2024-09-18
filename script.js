@@ -1,12 +1,15 @@
-import { ChessBoard } from "./logic/ChessBoard.js";
-import { getChessPieceImage, makeGlobal, setDebugMode, logicalToVisual, visualToLogical } from "./logic/util.js";
+import { CHESS_SFX } from "./logic/ChessVariables.js";
+import { getChessPieceImage, makeGlobal, setDebugMode, logicalToVisual, visualToLogical, generateGame, getMoves, movePiece, getGameStatus, decodeMove, killPiece } from "./logic/util.js";
+import { wrapGrid } from "https://esm.sh/animate-css-grid";
 
 setDebugMode(true);
 
 const cellHolder = document.querySelector(".cell-holder");
 const pieceHolder = document.querySelector(".piece-holder");
-const board = new ChessBoard();
-board.init();
+wrapGrid(pieceHolder);
+
+let board = await generateGame();
+console.log(board)
 
 let cells = {}
 let pieces = {}
@@ -56,15 +59,16 @@ function renderBoardPieces(positions) {
 			if (!positions[i][j]) continue;
 
 			let piece = document.createElement("img");
-			piece.src = getChessPieceImage(positions[i][j]);
+			let pieceImg = getChessPieceImage(positions[i][j]);
+			piece.src = pieceImg;
 			piece.style.gridArea = `${i + 1}/${j + 1}`;
-			piece.className = String.fromCharCode(j + 97) + k;
+			piece.className = `${logicalToVisual({ x: j, y: k })} ${pieceImg.slice(-7, -6)}`
 			pieceHolder.appendChild(piece);
 
 			pieces[String.fromCharCode(j + 97) + k] = piece
 		}
 	}
-} (board.getLogicalBoard());
+} (board.positions);
 
 function resetAllCells() {
 	let altColor = "white";
@@ -79,10 +83,12 @@ function resetAllCells() {
 			buttons[pos].children[0].style.transform = "scale(0)"
 			buttons[pos].children[1].style.transform = "scale(0)"
 
+			if (altColor == "black")
+				cell.style.boxShadow = "inset 0 0 10px 0px black";
+
 			if (j == 8) continue;
 
 			if (altColor != "white") {
-				cell.style.boxShadow = "inset 0 0 10px 0px black";
 				altColor = "white";
 			} else
 				altColor = "black";
@@ -106,15 +112,24 @@ let lastClickedPosition = ""
 let availableMoves = []
 let attackingMoves = []
 
-function buttonOnClick(event) {
+async function buttonOnClick(event) {
 	let pos = event.srcElement.closest(".buttons").className.split(" ")[0]
+	console.log(pos)
 
-	let attackingMove = attackingMoves.filter(e => e.x === visualToLogical(pos).x && e.y === visualToLogical(pos).y)
+	let attackingMove = attackingMoves.filter(e => pos == e.position)
 
 	if (availableMoves.includes(pos)) {
 		let visualPiece = pieces[lastClickedPosition]
-		let piece = board.getPieceOnPosition(visualToLogical(lastClickedPosition));
-		board.move(piece, visualToLogical(pos))
+		await movePiece(board.gameID, lastClickedPosition, pos)
+		board = await getGameStatus(board.gameID)
+		checkGameState()
+		console.log(board)
+
+		// Visual position
+		let newPos = visualToLogical(pos)
+		visualPiece.style.gridArea = `${newPos.y + 1}/${newPos.x + 1}`;
+		visualPiece.classList.remove(lastClickedPosition);
+		visualPiece.classList.add(pos);
 
 		delete pieces[lastClickedPosition]
 		pieces[pos] = visualPiece
@@ -127,13 +142,26 @@ function buttonOnClick(event) {
 		return;
 	}
 
+	console.log(pos)
+
 	if (attackingMove.length) {
 		let visualPiece = pieces[lastClickedPosition]
-		let piece = board.getPieceOnPosition(visualToLogical(lastClickedPosition));
-		board.kill(piece, attackingMove[0], attackingMove[0].killTarget)
+		let targetPiece = pieces[attackingMove[0].killTarget.position]
+		await killPiece(board.gameID, lastClickedPosition, pos, attackingMove[0].killTarget.position)
+		board = await getGameStatus(board.gameID)
+		checkGameState()
+		console.log(board)
+
+		// Visual position
+		let newPos = visualToLogical(pos)
+		visualPiece.style.gridArea = `${newPos.y + 1}/${newPos.x + 1}`;
+		visualPiece.classList.remove(lastClickedPosition);
+		visualPiece.classList.add(pos);
+
+		targetPiece.remove()
 
 		if (attackingMove[0]["isEnPassant"])
-			delete pieces[logicalToVisual(attackingMove[0].killTarget.position)]
+			delete pieces[attackingMove[0].killTarget.position]
 
 		delete pieces[lastClickedPosition];
 
@@ -147,6 +175,8 @@ function buttonOnClick(event) {
 		return;
 	}
 
+	console.log(pos)
+
 	if (!pieces[pos]) {
 		console.log("empty cell!!")
 		lastClickedPosition = ""
@@ -157,6 +187,7 @@ function buttonOnClick(event) {
 		resetHoverEffect()
 		return;
 	}
+	console.log(pos)
 
 	if (lastClickedPosition.length) {
 
@@ -171,26 +202,35 @@ function buttonOnClick(event) {
 		availableMoves = []
 		attackingMoves = []
 	}
+	console.log(pos)
+
+	if (!pieces[lastClickedPosition || pos].classList.contains(board.currentTurn[0]))
+		return;
 
 	resetAllCells()
 	resetHoverEffect()
 	lastClickedPosition = pos;
+	console.log(pos)
 
-	if (board.currentTurn != board.getPieceOnPosition(visualToLogical(pos)).color)
-		return;
+	let moves = (await getMoves(board.gameID, pos))
+	console.log(moves)
+	moves = moves.map(decodeMove)
+	console.log(moves)
+	moves.forEach(move => {
+		if ((move["isPawnDiagonal"] && !move["isKillingMove"]) || move["isFriendlyPiece"])
+			return;
 
-	let piece = board.getPieceOnPosition(visualToLogical(pos));
-	piece.getMovablePositions().forEach(move => {
 		if (move["isKillingMove"]) {
-			attackedCell(logicalToVisual(move))
+			attackedCell(move.position)
 			attackingMoves.push(move)
 		}
 		else {
-			availableCell(logicalToVisual(move))
-			availableMoves.push(logicalToVisual(move))
+			availableCell(move.position)
+			availableMoves.push(move.position)
 		}
 	})
 
+	console.log(attackingMoves)
 }
 
 function availableCell(pos) {
@@ -219,4 +259,9 @@ function attackedCell(pos) {
 		button.style.border = "0px solid hsla(360, 100%, 50%, 1)";
 		button.style.borderRadius = "10%";
 	})
+}
+
+function checkGameState() {
+	if(board.check)
+		CHESS_SFX.CHECK.play()
 }

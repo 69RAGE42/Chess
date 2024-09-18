@@ -1,21 +1,9 @@
-import { CHESS_PIECE_BLACK, CHESS_PIECE_UNICODE } from "./ChessVariables.js";
-
-export function objIncludes(obj, element) {
-	let res = false;
-	for (let value of Object.values(obj)) {
-		if (value === element) {
-			res = true;
-			break;
-		}
-	}
-
-	return res;
-}
+import { CHESS_PIECE_UNICODE, CHESS_SERVER_URL } from "./ChessVariables.js";
 
 export function getChessPieceImage(strPiece) {
 	let str = "./assets/chess_pieces/";
 
-	if (objIncludes(CHESS_PIECE_BLACK, strPiece)) str += "b_";
+	if (strPiece.charCodeAt(0) >= CHESS_PIECE_UNICODE.BLACK_KING && strPiece.charCodeAt(0) <= CHESS_PIECE_UNICODE.BLACK_PAWN) str += "b_";
 	else str += "w_";
 
 	switch (strPiece.charCodeAt(0)) {
@@ -75,4 +63,54 @@ export function makeGlobal(name, variable) {
 
 export function setDebugMode(boolean) {
 	debugMode = boolean
+}
+
+// Helper functions for backend operations
+export async function generateGame() {
+	return await (await fetch(CHESS_SERVER_URL + "/games/new")).json()
+}
+
+export function decodeMove(moveStr) {
+	let moveObj = {}
+
+	moveObj["position"] = moveStr.split(":")[0]
+
+	moveObj["isPawnDiagonal"] = moveStr.includes("/")
+	moveObj["isAttackableMove"] = moveStr.includes("#")
+	moveObj["isKillingMove"] = moveStr.includes("!")
+	moveObj["isEnPassant"] = moveStr.includes("^")
+	moveObj["isFriendlyPiece"] = moveStr.includes("@")
+	moveObj["killTarget"] = moveObj.isKillingMove ? { position: moveStr.split("!")[1] } : null
+
+	return moveObj
+}
+
+export async function getMoves(gameID, piece) {
+	return (await (await fetch(CHESS_SERVER_URL + "/games/" + gameID + "/moves/" + piece)).json()).moves
+}
+
+export async function movePiece(gameID, piece, newPos) {
+	return await (await fetch(CHESS_SERVER_URL + "/games/" + gameID + "/moves/" + piece, {
+		method: "POST",
+		headers: {
+			"Accept": "application/json",
+			"Content-Type": "application/json"
+		},
+		body: JSON.stringify({ moveTo: newPos })
+	})).json()
+}
+
+export async function killPiece(gameID, piece, newPos, piecePos) {
+	return await (await fetch(CHESS_SERVER_URL + "/games/" + gameID + "/moves/" + piece, {
+		method: "POST",
+		headers: {
+			"Accept": "application/json",
+			"Content-Type": "application/json"
+		},
+		body: JSON.stringify({ moveTo: newPos, killPos: piecePos })
+	})).json()
+}
+
+export async function getGameStatus(gameID) {
+	return (await (await fetch(CHESS_SERVER_URL + "/games/" + gameID)).json())
 }
