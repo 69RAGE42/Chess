@@ -133,6 +133,8 @@ async function buttonOnClick(event) {
 	if (availableMoves.includes(pos)) {
 		let visualPiece = pieces[lastClickedPosition]
 		board = await movePiece(board.gameID, lastClickedPosition, pos)
+		if(!board) return;
+
 		checkGameState()
 
 		// Visual position
@@ -156,6 +158,8 @@ async function buttonOnClick(event) {
 		let visualPiece = pieces[lastClickedPosition]
 		let targetPiece = pieces[attackingMove[0].killTarget.position]
 		board = await killPiece(board.gameID, lastClickedPosition, pos, attackingMove[0].killTarget.position)
+		if(!board) return;
+
 		checkGameState()
 
 		// Visual position
@@ -226,6 +230,8 @@ async function buttonOnClick(event) {
 	lastClickedPosition = pos;
 
 	let moves = await getMoves(board.gameID, pos)
+	if(!moves) return;
+
 	moves = moves.map(decodeMove)
 	moves.forEach(move => {
 		if ((move["isPawnDiagonal"] && !move["isKillingMove"]) || move["isFriendlyPiece"])
