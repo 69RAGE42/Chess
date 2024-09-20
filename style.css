@@ -4,11 +4,6 @@
 	box-sizing: border-box;
 }
 
-:root {
-	--light-color-1: 
-	--dark-color-1: 
-}
-
 body {
 	width: 100vw;
 	height: 100vh;
@@ -87,10 +82,11 @@ img {
 	z-index: 3;
 }
 
-/* .buttons:hover {
-	border: 2.5px solid hsla(0, 0%, 80%, 1);
-	border-radius: 15%;
-} */
+.no-conn-text {
+	font-size: 5vmin;
+	color: white;
+	text-align: center;
+}
 
 .cell.black {
 	background: linear-gradient(135deg, hsl(190, 74%, 16%), hsl(190, 75%, 24%));

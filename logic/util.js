@@ -66,8 +66,64 @@ export function setDebugMode(boolean) {
 }
 
 // Helper functions for backend operations
+let isServerOnline = false;
+
+export async function checkServerStatus() {
+	try {
+		let apiRes = await (await fetch(CHESS_SERVER_URL)).json()
+		let gamesRes = await (await fetch(CHESS_SERVER_URL+ "/games") ).json()
+
+		isServerOnline = (apiRes && apiRes.status === "success") || (gamesRes && gamesRes.status === "success");
+	}
+	catch (error) {
+		return console.error("Server is offline.", error)
+	}
+}
+
 export async function generateGame() {
+	if (!isServerOnline) {
+		return console.error("Cannot generate a new game because the server is offline.")
+	}
+
 	return await (await fetch(CHESS_SERVER_URL + "/games/new")).json()
+}
+
+export async function getMoves(gameID, piece) {
+	if (!isServerOnline) {
+		return console.error("Cannot get moves because the server is offline.")
+	}
+
+	return (await (await fetch(CHESS_SERVER_URL + "/games/" + gameID + "/moves/" + piece)).json()).moves
+}
+
+export async function movePiece(gameID, piece, newPos) {
+	if (!isServerOnline) {
+		return console.error("Cannot move piece because the server is offline.")
+	}
+
+	return await (await fetch(CHESS_SERVER_URL + "/games/" + gameID + "/moves/" + piece, {
+		method: "POST",
+		headers: {
+			"Accept": "application/json",
+			"Content-Type": "application/json"
+		},
+		body: JSON.stringify({ moveTo: newPos })
+	})).json()
+}
+
+export async function killPiece(gameID, piece, newPos, piecePos) {
+	if (!isServerOnline) {
+		return console.error("Cannot kill piece because the server is offline.")
+	}
+
+	return await (await fetch(CHESS_SERVER_URL + "/games/" + gameID + "/moves/" + piece, {
+		method: "POST",
+		headers: {
+			"Accept": "application/json",
+			"Content-Type": "application/json"
+		},
+		body: JSON.stringify({ moveTo: newPos, killPos: piecePos })
+	})).json()
 }
 
 export function decodeMove(moveStr) {
@@ -83,34 +139,4 @@ export function decodeMove(moveStr) {
 	moveObj["killTarget"] = moveObj.isKillingMove ? { position: moveStr.split("!")[1] } : null
 
 	return moveObj
-}
-
-export async function getMoves(gameID, piece) {
-	return (await (await fetch(CHESS_SERVER_URL + "/games/" + gameID + "/moves/" + piece)).json()).moves
-}
-
-export async function movePiece(gameID, piece, newPos) {
-	return await (await fetch(CHESS_SERVER_URL + "/games/" + gameID + "/moves/" + piece, {
-		method: "POST",
-		headers: {
-			"Accept": "application/json",
-			"Content-Type": "application/json"
-		},
-		body: JSON.stringify({ moveTo: newPos })
-	})).json()
-}
-
-export async function killPiece(gameID, piece, newPos, piecePos) {
-	return await (await fetch(CHESS_SERVER_URL + "/games/" + gameID + "/moves/" + piece, {
-		method: "POST",
-		headers: {
-			"Accept": "application/json",
-			"Content-Type": "application/json"
-		},
-		body: JSON.stringify({ moveTo: newPos, killPos: piecePos })
-	})).json()
-}
-
-export async function getGameStatus(gameID) {
-	return (await (await fetch(CHESS_SERVER_URL + "/games/" + gameID)).json())
 }

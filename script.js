@@ -1,5 +1,5 @@
 import { CHESS_SFX } from "./logic/ChessVariables.js";
-import { getChessPieceImage, makeGlobal, setDebugMode, logicalToVisual, visualToLogical, generateGame, getMoves, movePiece, getGameStatus, decodeMove, killPiece } from "./logic/util.js";
+import { getChessPieceImage, makeGlobal, setDebugMode, logicalToVisual, visualToLogical, generateGame, getMoves, movePiece, decodeMove, killPiece, checkServerStatus } from "./logic/util.js";
 import { wrapGrid } from "https://esm.sh/animate-css-grid";
 
 setDebugMode(true);
@@ -8,12 +8,15 @@ const cellHolder = document.querySelector(".cell-holder");
 const pieceHolder = document.querySelector(".piece-holder");
 wrapGrid(pieceHolder);
 
+await checkServerStatus()
+
 let board = await generateGame();
-console.log(board)
 
 let cells = {}
 let pieces = {}
 let buttons = {}
+
+let checkedCell = ""
 
 makeGlobal('cells', cells);
 makeGlobal('pieces', pieces);
@@ -38,9 +41,19 @@ for (let i = 8; i >= 1; i--) {
 	}
 }
 
-renderBoardPieces(board.positions)
-resetAllCells()
-resetHoverEffect()
+if (board) {
+	renderBoardPieces(board.positions)
+	resetAllCells()
+	resetHoverEffect()
+} else {
+	pieceHolder.style.gridTemplateColumns = "1fr"
+	pieceHolder.style.gridTemplateRows = "1fr"
+	
+	let text = document.createElement("div")
+	text.innerHTML = "Cannot connect to the server."
+	text.classList.add("no-conn-text")
+	pieceHolder.append(text)
+}
 
 function renderBoardPieces(positions) {
 	for (let i = 0, k = 8; i < 8; i++, k--) {
@@ -68,7 +81,7 @@ function renderBoardPieces(positions) {
 			pieces[String.fromCharCode(j + 97) + k] = piece
 		}
 	}
-} (board.positions);
+};
 
 function resetAllCells() {
 	let altColor = "white";
@@ -114,16 +127,13 @@ let attackingMoves = []
 
 async function buttonOnClick(event) {
 	let pos = event.srcElement.closest(".buttons").className.split(" ")[0]
-	console.log(pos)
 
 	let attackingMove = attackingMoves.filter(e => pos == e.position)
 
 	if (availableMoves.includes(pos)) {
 		let visualPiece = pieces[lastClickedPosition]
-		await movePiece(board.gameID, lastClickedPosition, pos)
-		board = await getGameStatus(board.gameID)
+		board = await movePiece(board.gameID, lastClickedPosition, pos)
 		checkGameState()
-		console.log(board)
 
 		// Visual position
 		let newPos = visualToLogical(pos)
@@ -142,15 +152,11 @@ async function buttonOnClick(event) {
 		return;
 	}
 
-	console.log(pos)
-
 	if (attackingMove.length) {
 		let visualPiece = pieces[lastClickedPosition]
 		let targetPiece = pieces[attackingMove[0].killTarget.position]
-		await killPiece(board.gameID, lastClickedPosition, pos, attackingMove[0].killTarget.position)
-		board = await getGameStatus(board.gameID)
+		board = await killPiece(board.gameID, lastClickedPosition, pos, attackingMove[0].killTarget.position)
 		checkGameState()
-		console.log(board)
 
 		// Visual position
 		let newPos = visualToLogical(pos)
@@ -175,10 +181,8 @@ async function buttonOnClick(event) {
 		return;
 	}
 
-	console.log(pos)
-
+	// Empty cell
 	if (!pieces[pos]) {
-		console.log("empty cell!!")
 		lastClickedPosition = ""
 		availableMoves = []
 		attackingMoves = []
@@ -187,7 +191,16 @@ async function buttonOnClick(event) {
 		resetHoverEffect()
 		return;
 	}
-	console.log(pos)
+	else if (pieces[pos] && !pieces[pos].classList.contains(board.currentTurn[0])) {
+
+		lastClickedPosition = ""
+		availableMoves = []
+		attackingMoves = []
+
+		resetAllCells()
+		resetHoverEffect()
+		return;
+	}
 
 	if (lastClickedPosition.length) {
 
@@ -195,6 +208,8 @@ async function buttonOnClick(event) {
 			lastClickedPosition = ""
 			availableMoves = []
 			attackingMoves = []
+
+			resetHoverEffect()
 			return resetAllCells();
 		}
 
@@ -202,7 +217,6 @@ async function buttonOnClick(event) {
 		availableMoves = []
 		attackingMoves = []
 	}
-	console.log(pos)
 
 	if (!pieces[lastClickedPosition || pos].classList.contains(board.currentTurn[0]))
 		return;
@@ -210,12 +224,9 @@ async function buttonOnClick(event) {
 	resetAllCells()
 	resetHoverEffect()
 	lastClickedPosition = pos;
-	console.log(pos)
 
-	let moves = (await getMoves(board.gameID, pos))
-	console.log(moves)
+	let moves = await getMoves(board.gameID, pos)
 	moves = moves.map(decodeMove)
-	console.log(moves)
 	moves.forEach(move => {
 		if ((move["isPawnDiagonal"] && !move["isKillingMove"]) || move["isFriendlyPiece"])
 			return;
@@ -229,8 +240,6 @@ async function buttonOnClick(event) {
 			availableMoves.push(move.position)
 		}
 	})
-
-	console.log(attackingMoves)
 }
 
 function availableCell(pos) {
@@ -262,6 +271,15 @@ function attackedCell(pos) {
 }
 
 function checkGameState() {
-	// if(board.check)
-	// 	CHESS_SFX.CHECK.play()
+	if (board.check) {
+		if (!checkedCell.length) {
+			checkedCell = board.checked
+			cells[board.checked].style.background = "linear-gradient(135deg, hsl(0, 100%, 50%), hsl(0, 100%, 56%))"
+		}
+	} else {
+		if (checkedCell.length) {
+			cells[checkedCell].style.background = ""
+			checkedCell = "";
+		}
+	}
 }
