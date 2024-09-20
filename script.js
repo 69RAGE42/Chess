@@ -291,4 +291,9 @@ function checkGameState() {
 			checkedCell = "";
 		}
 	}
+
+	if(board.checkmate)
+	{
+		// TODO: Game is in checkmate, do stuff
+	}
 }
