@@ -54,8 +54,10 @@ body {
 	position: absolute;
 
 	display: grid;
-	grid-template-columns: repeat(8, 1fr);
-	grid-template-rows: repeat(8, 1fr);
+	/* grid-template-columns: repeat(8, 1fr); */
+	/* grid-template-rows: repeat(8, 1fr); */
+	grid-template-columns: 1fr;
+	grid-template-rows: 1fr;
 	justify-items: center;
 	align-items: center;
 	z-index: 2;
@@ -82,7 +84,7 @@ img {
 	z-index: 3;
 }
 
-.no-conn-text {
+.splash-text {
 	font-size: 5vmin;
 	color: white;
 	text-align: center;

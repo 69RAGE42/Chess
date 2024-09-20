@@ -8,6 +8,11 @@ const cellHolder = document.querySelector(".cell-holder");
 const pieceHolder = document.querySelector(".piece-holder");
 wrapGrid(pieceHolder);
 
+let splashText = document.createElement("div")
+splashText.innerHTML = "Loading..."
+splashText.classList.add("splash-text")
+pieceHolder.append(splashText)
+
 await checkServerStatus()
 
 let board = await generateGame();
@@ -42,18 +47,16 @@ for (let i = 8; i >= 1; i--) {
 }
 
 if (board) {
+	pieceHolder.style.gridTemplateColumns = "repeat(8, 1fr)"
+	pieceHolder.style.gridTemplateRows = "repeat(8, 1fr)"
+
+	splashText.remove()
+
 	renderBoardPieces(board.positions)
 	resetAllCells()
 	resetHoverEffect()
-} else {
-	pieceHolder.style.gridTemplateColumns = "1fr"
-	pieceHolder.style.gridTemplateRows = "1fr"
-	
-	let text = document.createElement("div")
-	text.innerHTML = "Cannot connect to the server."
-	text.classList.add("no-conn-text")
-	pieceHolder.append(text)
-}
+} else
+	splashText.innerHTML = "Cannot connect to the server."
 
 function renderBoardPieces(positions) {
 	for (let i = 0, k = 8; i < 8; i++, k--) {
@@ -133,7 +136,7 @@ async function buttonOnClick(event) {
 	if (availableMoves.includes(pos)) {
 		let visualPiece = pieces[lastClickedPosition]
 		board = await movePiece(board.gameID, lastClickedPosition, pos)
-		if(!board) return;
+		if (!board) return;
 
 		checkGameState()
 
@@ -158,7 +161,7 @@ async function buttonOnClick(event) {
 		let visualPiece = pieces[lastClickedPosition]
 		let targetPiece = pieces[attackingMove[0].killTarget.position]
 		board = await killPiece(board.gameID, lastClickedPosition, pos, attackingMove[0].killTarget.position)
-		if(!board) return;
+		if (!board) return;
 
 		checkGameState()
 
@@ -230,7 +233,7 @@ async function buttonOnClick(event) {
 	lastClickedPosition = pos;
 
 	let moves = await getMoves(board.gameID, pos)
-	if(!moves) return;
+	if (!moves) return;
 
 	moves = moves.map(decodeMove)
 	moves.forEach(move => {
